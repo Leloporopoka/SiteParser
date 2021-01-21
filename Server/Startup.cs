@@ -1,10 +1,12 @@
+using Application;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Server.Services;
+using System;
+using System.Net.Http;
 
 namespace Server
 {
@@ -24,6 +26,13 @@ namespace Server
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddMvc();
+            services.AddTransient(sp => new HttpClient
+            {
+                BaseAddress = new Uri("http://localhost:51183/")
+            });
+            services.AddSingleton<SiteParserService>();
+            services.AddApplication();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,12 +42,9 @@ namespace Server
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseRouting();
             app.UseStaticFiles();
-
 
             app.UseEndpoints(endpoints =>
             {
