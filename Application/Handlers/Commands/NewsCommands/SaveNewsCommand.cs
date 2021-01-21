@@ -2,7 +2,7 @@
 using MediatR;
 using System.Collections.Generic;
 
-namespace Application.Handlers.Commands.News
+namespace Application.Handlers.Commands.NewsCommands
 {
     public class SaveNewsCommand : IRequest<bool>
     {
