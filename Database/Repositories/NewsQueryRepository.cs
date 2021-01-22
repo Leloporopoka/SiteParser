@@ -3,6 +3,7 @@ using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Database.Repositories
 {
@@ -25,10 +26,16 @@ namespace Database.Repositories
             return news.Where(n => n.Text.Contains(SearchWord, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        public List<string> GetTop10FrequentWords()
+        public List<string> GetTopTenFrequentWords()
         {
             var texts = _context.News.Select(s => s.Text).ToList();
-            var result = texts.GroupBy(s => s).Where(g => g.Count() > 1).OrderByDescending(g => g.Count()).Select(g => g.Key);
+            string totalText = "";
+            texts.ForEach(text => totalText += text + " ");
+            var result = Regex.Split(totalText.ToLower(), @"\W+")
+                 .Where(s => s.Length > 3)
+                 .GroupBy(s => s)
+                 .OrderByDescending(g => g.Count()).Take(10);
+            return result.Select(r => r.Key).ToList();
         }
     }
 }

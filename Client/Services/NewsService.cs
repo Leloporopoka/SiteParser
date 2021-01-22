@@ -1,7 +1,6 @@
 ﻿using Application.Dtos;
 using Client.Models;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -43,5 +42,12 @@ namespace Client.Services
             return result;
         }
 
+        public async Task<List<string>> GetTopTenFrequentWords()
+        {
+            var response = await _httpCLient.GetAsync("api/News/GetTopTenFrequentWords");
+            var responseMessage = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<List<string>>(responseMessage);
+            return result;
+        }
     }
 }

@@ -48,5 +48,12 @@ namespace Server.Controllers
             });
             return Ok(news);
         }
+
+        [HttpGet("GetTopTenFrequentWords")]
+        public async Task<IActionResult> GetTopTenFrequentWords()
+        {
+            var words = await _mediator.Send(new GetTopTenFrequentWordsQuery());
+            return Ok(words);
+        }
     }
 }

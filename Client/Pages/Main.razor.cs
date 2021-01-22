@@ -14,13 +14,12 @@ namespace Client.Pages
         public NewsService NewsService { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public List<NewsDto> News { get; set; }
-
+        public List<NewsDto> News { get; set; } = new List<NewsDto>();
+        public List<string> FrequentWords { get; set; } = new List<string>();
         public string SearchWord { get; set; }
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            News = new List<NewsDto>();
         }
         public void StartDateChanged(DateTime date)
         {
@@ -42,6 +41,10 @@ namespace Client.Pages
         public async Task GetNewsBySearchWordAsync()
         {
             News = await NewsService.GetNewsBySearchWord(SearchWord);
+        }
+        public async Task GetTopTenFrequentWords()
+        {
+            FrequentWords = await NewsService.GetTopTenFrequentWords();
         }
     }
 }

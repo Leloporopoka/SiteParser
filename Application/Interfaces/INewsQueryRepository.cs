@@ -8,5 +8,6 @@ namespace Application.Interfaces
     {
         public List<News> GetNewsByDateRange(DateTime StardDate, DateTime EndDate);
         public List<News> GetNewsBySearchWord(string SearchWord);
+        public List<string> GetTopTenFrequentWords();
     }
 }

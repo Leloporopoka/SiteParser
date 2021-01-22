@@ -17,10 +17,7 @@ namespace Application.Handlers.Commands.NewsCommands
         public async Task<bool> Handle(SaveNewsCommand request, CancellationToken cancellationToken)
         {
             var news = new List<News>();
-            foreach (var item in request.News)
-            {
-                news.Add(new News(item.Title, item.Text, item.Date));
-            }
+            request.News.ForEach(item => news.Add(new News(item.Title, item.Text, item.Date)));
             _repository.AddNews(news);
             return true;
         }

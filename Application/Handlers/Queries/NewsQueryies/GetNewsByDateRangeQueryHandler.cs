@@ -18,10 +18,7 @@ namespace Application.Handlers.Queries.NewsQueryies
         {
             var newsDtos = new List<NewsDto>();
             var news = _repository.GetNewsByDateRange(request.StartDate, request.EndDate);
-            foreach (var item in news)
-            {
-                newsDtos.Add(new NewsDto { Title = item.Title, Text = item.Text, Date = item.Date } );
-            }
+            news.ForEach(item => newsDtos.Add(new NewsDto { Title = item.Title, Text = item.Text, Date = item.Date }));
             return newsDtos;
         }
     }
