@@ -1,7 +1,11 @@
-﻿
+﻿using Application.Dtos;
+using Client.Models;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
-
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Client.Services
 {
@@ -16,8 +20,28 @@ namespace Client.Services
 
         public async void GetNewsAndSave()
         {
-            Console.WriteLine("Save");
-            await _httpCLient.GetAsync("api/SiteParser/GetNewsAndSave");
+            await _httpCLient.GetAsync("api/News/GetNewsAndSave");
         }
+        public async Task<List<NewsDto>> GetNewsByDateRange(DateRangeModel model)
+        {
+            var json = JsonConvert.SerializeObject(model);
+            var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpContent = stringContent;
+            var response = await _httpCLient.PostAsync("api/News/GetNewsByDateRange", httpContent);
+            var responseMessage = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<List<NewsDto>>(responseMessage);
+            return result;
+        }
+        public async Task<List<NewsDto>> GetNewsBySearchWord(string searchWord)
+        {
+            var json = JsonConvert.SerializeObject(searchWord);
+            var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpContent = stringContent;
+            var response = await _httpCLient.PostAsync("api/News/GetNewsBySearchWord", httpContent);
+            var responseMessage = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<List<NewsDto>>(responseMessage);
+            return result;
+        }
+
     }
 }

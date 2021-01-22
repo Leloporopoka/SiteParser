@@ -1,6 +1,48 @@
-﻿@page "/main"
+﻿@page "/"
 @inherits MainBase
+@using Syncfusion.Blazor.Calendars
 
-<h3>Main Page</h3>
+<h3>Главная страница</h3>
 
-<button class="btn btn-primary" @onclick="GetSiteInfoAndSave">Взять данные с новостного сайта</button>
+<div class="container mb-5">
+    <div class="row">
+
+        <div class="col">
+            <SfDateRangePicker TValue="DateTime" StartDateChanged="StartDateChanged" EndDateChanged="EndDateChanged"> </SfDateRangePicker>
+
+            <button class="btn btn-primary mt-2" @onclick="GetNewsByDateRangeAsync">Показать по выбранному промежутку времени</button>
+        </div>
+
+        <div class="col">
+            <input @bind="SearchWord" type="text" />
+            <button class="btn btn-primary mt-2" @onclick="GetNewsBySearchWordAsync">Показать по найденому слову в новости</button>
+        </div>
+
+        @if (News != null && News.Count > 0)
+        {
+            <table class="table mb-4 mt-2">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Заголовок</th>
+                        <th scope="col">Текст</th>
+                        <th scope="col">Дата</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in News)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@item.Text</td>
+                            <td>@item.Date</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    <button class="btn btn-primary mt-3" @onclick="GetSiteInfoAndSave">Взять данные с новостного сайта</button>
+</div>
+
+
+
