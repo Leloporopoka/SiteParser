@@ -1,4 +1,5 @@
 using Application;
+using Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +33,7 @@ namespace Server
             });
             services.AddSingleton<SiteParserService>();
             services.AddApplication();
+            services.AddDatabase();
 
         }
 

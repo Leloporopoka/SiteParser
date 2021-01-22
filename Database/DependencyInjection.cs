@@ -10,7 +10,6 @@ namespace Database
         {
             services.AddDbContext<NewsContext>();
             services.AddScoped<INewsCommandRepository, NewsCommandRepository>();
-
         }
     }
 

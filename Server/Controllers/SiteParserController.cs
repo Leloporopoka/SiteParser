@@ -1,4 +1,4 @@
-﻿using Application.Handlers.Commands.News;
+﻿using Application.Handlers.Commands.NewsCommands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Server.Services;

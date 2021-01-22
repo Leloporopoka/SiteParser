@@ -28,15 +28,20 @@ namespace Server.Services
                 var htmlCodument = new HtmlDocument();
                 htmlCodument.LoadHtml(html);
 
-                foreach (HtmlNode node in htmlCodument.DocumentNode.SelectNodes("//div[@class='" + "news_section-item" + "']"))
-                {
-                    var date = node.SelectNodes("//time[@class='" + "news_date" + "']").First().InnerText;
-                    date = date.Replace(",", string.Empty);
+                var nodes = htmlCodument.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", "").Equals("news_block")).FirstOrDefault();
+                var items = nodes.Descendants("div").Where(node => node.GetAttributeValue("class", "").Equals("news_section_item-left")).ToList();
+                items.RemoveAt(items.Count - 1);
 
+                foreach (var item in items)
+                {
+                    var title = item.Descendants("a").Where(i => i.GetAttributeValue("class", "").Equals("news_section_title")).FirstOrDefault().InnerText;
+                    var date = item.Descendants("time").Where(i => i.GetAttributeValue("class", "").Equals("news_date")).FirstOrDefault().InnerText;
+                    date = date.Replace(",", string.Empty);
+                    var text = item.Descendants("p").Where(i => i.GetAttributeValue("class", "").Equals("post_text")).FirstOrDefault().InnerText;
                     news.Add(new NewsDto
                     {
-                        Title = node.SelectNodes("//a[@class='" + "news_section_title" + "']").First().InnerText,
-                        Text = node.SelectNodes("//p[@class='" + "post_text" + "']").First().InnerText,
+                        Title = title,
+                        Text = text,
                         Date = DateTime.Parse(date, CultureInfo.CreateSpecificCulture("fr-FR"))
                     });
                 }
