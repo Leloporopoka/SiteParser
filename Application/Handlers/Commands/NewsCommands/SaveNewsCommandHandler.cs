@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Domain.Models;
 using System.Threading.Tasks;
+using System;
 
 namespace Application.Handlers.Commands.NewsCommands
 {
@@ -16,10 +17,18 @@ namespace Application.Handlers.Commands.NewsCommands
         }
         public async Task<bool> Handle(SaveNewsCommand request, CancellationToken cancellationToken)
         {
-            var news = new List<News>();
-            request.News.ForEach(item => news.Add(new News(item.Title, item.Text, item.Date)));
-            _repository.AddNews(news);
-            return true;
+            try
+            {
+                var news = new List<News>();
+                request.News.ForEach(item => news.Add(new News(item.Title, item.Text, item.Date)));
+                _repository.AddNews(news);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error " + ex.Message);
+                return false;
+            }
         }
     }
 }

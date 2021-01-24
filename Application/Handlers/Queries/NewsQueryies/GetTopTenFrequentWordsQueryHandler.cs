@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +16,15 @@ namespace Application.Handlers.Queries.NewsQueryies
         }
         public async Task<List<string>> Handle(GetTopTenFrequentWordsQuery request, CancellationToken cancellationToken)
         {
-            return _repository.GetTopTenFrequentWords();
+            try
+            {
+                return _repository.GetTopTenFrequentWords();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error " + ex.Message);
+                return new List<string>();
+            }
         }
     }
 }
