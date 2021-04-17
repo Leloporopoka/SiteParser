@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Database.Repositories;
+using Database.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Database
@@ -8,9 +9,9 @@ namespace Database
     {
         public static void AddDatabase(this IServiceCollection services)
         {
-            services.AddDbContext<NewsContext>();
-            services.AddScoped<INewsCommandRepository, NewsCommandRepository>();
-            services.AddScoped<INewsQueryRepository, NewsQueryRepository>();
+            services.AddScoped<IPersonCommandRepository, PersonCommandRepository>();
+            services.AddScoped<IPersonQueryRepository, PersonQueryRepository>();
+            services.AddSingleton<DatabaseService>();
         }
     }
 

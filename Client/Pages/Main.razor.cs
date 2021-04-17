@@ -11,40 +11,30 @@ namespace Client.Pages
     public class MainBase : ComponentBase
     {
         [Inject]
-        public NewsService NewsService { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public List<NewsDto> News { get; set; } = new List<NewsDto>();
-        public List<string> FrequentWords { get; set; } = new List<string>();
-        public string SearchWord { get; set; }
+        public HttpService HttpService { get; set; }
+        public List<PersonDto> Persons { get; set; } = new List<PersonDto>();
+        public PersonModel Model { get; set; } = new PersonModel();
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+            GetPersons();
         }
-        public void StartDateChanged(DateTime date)
+        protected async void GetPersons()
         {
-            StartDate = date;
+            Persons = await HttpService.Take();
+            StateHasChanged();
         }
-        public void EndDateChanged(DateTime date)
+        protected async void Submit()
         {
-            EndDate = date;
+            await HttpService.Add(Model);
+            GetPersons();
         }
 
-        public void GetSiteInfoAndSave()
+        protected async void Delete(Guid id)
         {
-            NewsService.GetNewsAndSave();
+            await HttpService.Delete(id);
+            GetPersons();
         }
-        public async Task GetNewsByDateRangeAsync()
-        {
-            News = await NewsService.GetNewsByDateRange(new DateRangeModel { StartDate = StartDate, EndDate = EndDate });
-        }
-        public async Task GetNewsBySearchWordAsync()
-        {
-            News = await NewsService.GetNewsBySearchWord(SearchWord);
-        }
-        public async Task GetTopTenFrequentWords()
-        {
-            FrequentWords = await NewsService.GetTopTenFrequentWords();
-        }
+
     }
 }
